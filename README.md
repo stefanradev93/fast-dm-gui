@@ -19,11 +19,11 @@ If you want to use this GUI, follow these steps:
 
 3. Install the following libraries via the command line using pip:
 
-pip install pyqt5 qdarkstyle numpy pandas matplotlib
+   pip install pyqt5 qdarkstyle numpy pandas matplotlib
   
 4. Start the GUI by double-clicking the main.pyw file or by referencing it via cmd:
 
-python ../your-path-to-repository/gui/main.pyw
+   python ../your-path-to-repository/gui/main.pyw
 
 For a general introduction in fast-dm, please reference our website:
 
