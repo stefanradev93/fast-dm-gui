@@ -18,6 +18,7 @@ If you want to use this GUI, follow these steps:
 2. Download and install the latest version of Python 3.x
 
 3. Install the following libraries via the command line using pip:
+
   pip install pyqt5 qdarkstyle numpy pandas matplotlib
   
 4. Start the GUI by double-clicking the main.pyw file or by referencing it via cmd:
