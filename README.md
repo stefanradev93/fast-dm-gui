@@ -9,7 +9,7 @@ The GUI was developed by Stefan Radev and Veronika Lerche as an extension to the
 
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4376117/
 
-It provides a flexible interface to the earlier command-line tool written in C including a visualization module and prallelised parameter estimation over participants.
+It provides a flexible interface to the earlier cmd tool written in C including a visualization module and prallelised parameter estimation across participants.
 
 If you want to use this GUI, follow these steps:
 
@@ -24,8 +24,8 @@ If you want to use this GUI, follow these steps:
 4. Start the GUI by double-clicking the main.pyw file or by referencing it via cmd:
 
    python ../your-path-to-repository/gui/main.pyw
-
-For a general introduction in fast-dm, please reference our website:
+   
+Alternatively, you can find a click-through Windows installer at our webpage, plus a general introduction to fast-dm:
 
 http://www.psychologie.uni-heidelberg.de/ae/meth/fast-dm/
 
