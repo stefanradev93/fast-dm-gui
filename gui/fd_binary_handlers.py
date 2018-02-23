@@ -137,13 +137,19 @@ class FastDmRunHandler(QObject):
 
             # Write to file containing all data sets
             for sf in range(0, nProcesses):
-                # Parse single estimates file and get header and line
-                header, line = self._parseSingleFile(path, 'parameters_', files[i + sf].split('/')[-1])
                 # Write header, if we are at first iteration
+                # since there is a big problem with this approach
+                # (different files have different order of estimated parameters)
+                # we need to make sure that all comply to the first header:
+                name = files[i + sf].split('/')[-1]
                 if i == 0 and sf == 0:
-                    allEstimatesFile.write(header)
-                # Write values line
-                allEstimatesFile.write(line)
+                    h2v, header = self._parseSingleFile(path, 'parameters_', name)
+                    allEstimatesFile.write(";".join(['dataset'] + header) + '\n')
+                else:
+                    h2v, _ = self._parseSingleFile(path, 'parameters_', name)
+                # Write values lines in order of the first header
+                allEstimatesFile.write(";".join([name] + [h2v[h] for h in header]) + '\n')
+
                 # Update progress bar
                 self.progressUpdate.emit(i + sf + 1)
 
@@ -210,11 +216,14 @@ class FastDmRunHandler(QObject):
         with open(path + base + name, 'r') as dataFile:
             # Read lines into a list
             lines = dataFile.read().splitlines()
-            # Get header and values as string lines (strip trailing whitespace)
-            header = ';'.join(['dataset'] + [line.split('=')[0].rstrip() for line in lines]) + '\n'
-            values = ';'.join([name] + [line.split('=')[-1].lstrip() for line in lines]) + '\n'
+            # Get header in order
+            header = [line.split('=')[0].rstrip().lstrip() for line in lines]
+            # Get header and values in oder
+            header_and_values = {line.split('=')[0].rstrip().lstrip():
+                                 line.split('=')[-1].lstrip().rstrip() for line in lines}
             # Return in this order
-            return header, values
+            return header_and_values, header
+
 
     def saveFileTemplate(self):
         """Called externally, saves the file template to the session directory."""
