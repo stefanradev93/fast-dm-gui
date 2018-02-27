@@ -7,6 +7,7 @@ from fd_binary_handlers import *
 from multiprocessing import cpu_count
 import tracksave
 from functools import partial
+import re
 
 
 class FastDmModelTab(QWidget):
@@ -91,7 +92,7 @@ class FastDmMainFrame(QWidget):
 
 
 class FastDmOutputDirFrame(QWidget):
-
+    STRING_PATTERN = r"^[0-9A-Za-z_-]+$"
     def __init__(self, session, parent=None):
         super(FastDmOutputDirFrame, self).__init__(parent)
 
@@ -159,7 +160,15 @@ class FastDmOutputDirFrame(QWidget):
     def _onName(self, text):
         """Triggered when user types into session edit."""
 
-        self._session['sessionname'] = text
+        if re.match(FastDmOutputDirFrame.STRING_PATTERN, text):
+            self._session['sessionname'] = text.rstrip().lstrip()
+            self._name.setText(self._session['sessionname'])
+        else:
+            # Revert to prvious and warn
+            self._name.setText(self._session['sessionname'])
+            msg = QMessageBox()
+            msg.warning(self, "Session Name Warning", "Make sure session name contains "
+                                                      "only English characters, numbers, or the symbols '-_'")
 
     def updateDirName(self, newSession):
         """
