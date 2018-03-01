@@ -122,7 +122,7 @@ class FastDmRunHandler(QObject):
                     # Write log to console
                     self.consoleLog.emit(log)
                     # Check for invalid or error, exit
-                    if 'invalid' in log or 'error' in log:
+                    if 'invalid' in log or 'error' in log or "Not enough" in log:
                         self.error = True
                         return
 
@@ -141,14 +141,19 @@ class FastDmRunHandler(QObject):
                 # since there is a big problem with this approach
                 # (different files have different order of estimated parameters)
                 # we need to make sure that all comply to the first header:
-                name = files[i + sf].split('/')[-1]
-                if i == 0 and sf == 0:
-                    h2v, header = self._parseSingleFile(path, 'parameters_', name)
-                    allEstimatesFile.write(";".join(['dataset'] + header) + '\n')
-                else:
-                    h2v, _ = self._parseSingleFile(path, 'parameters_', name)
-                # Write values lines in order of the first header
-                allEstimatesFile.write(";".join([name] + [h2v[h] for h in header]) + '\n')
+                try:
+                    name = files[i + sf].split('/')[-1]
+                    if i == 0 and sf == 0:
+                        h2v, header = self._parseSingleFile(path, 'parameters_', name)
+                        allEstimatesFile.write(";".join(['dataset'] + header) + '\n')
+                    else:
+                        h2v, _ = self._parseSingleFile(path, 'parameters_', name)
+                    # Write values lines in order of the first header
+                    allEstimatesFile.write(";".join([name] + [h2v[h] for h in header]) + '\n')
+                except FileNotFoundError as e:
+                    # Catch problem, if any with fast-dm failing
+                    self.error = True
+                    return
 
                 # Update progress bar
                 self.progressUpdate.emit(i + sf + 1)
@@ -223,7 +228,6 @@ class FastDmRunHandler(QObject):
                                  line.split('=')[-1].lstrip().rstrip() for line in lines}
             # Return in this order
             return header_and_values, header
-
 
     def saveFileTemplate(self):
         """Called externally, saves the file template to the session directory."""

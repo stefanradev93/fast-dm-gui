@@ -164,7 +164,7 @@ class FastDmOutputDirFrame(QWidget):
             self._session['sessionname'] = text.rstrip().lstrip()
             self._name.setText(self._session['sessionname'])
         else:
-            # Revert to prvious and warn
+            # Revert to previous and warn
             self._name.setText(self._session['sessionname'])
             msg = QMessageBox()
             msg.warning(self, "Session Name Warning", "Make sure session name contains "
