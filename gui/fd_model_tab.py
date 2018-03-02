@@ -93,6 +93,7 @@ class FastDmMainFrame(QWidget):
 
 class FastDmOutputDirFrame(QWidget):
     STRING_PATTERN = r"^[0-9A-Za-z_-]+$"
+
     def __init__(self, session, parent=None):
         super(FastDmOutputDirFrame, self).__init__(parent)
 
