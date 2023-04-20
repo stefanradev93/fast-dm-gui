@@ -162,4 +162,4 @@ class FastDmConsole(QWidget):
         """Used to make run button visible by shrinking console to 1/5 of display height."""
 
         screenHeight = QApplication.desktop().screenGeometry().height()
-        return QSize(self.width(), screenHeight/5)
+        return QSize(int(self.width()), int(screenHeight/5))
